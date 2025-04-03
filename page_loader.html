@@ -1,151 +1,201 @@
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HANERI Loader</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
 
-<style>
-  #dc-loader-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #ffffff;
-    z-index: 999999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Barlow Condensed', sans-serif !important;
-    overflow: hidden;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-
-  .dc-haneri-container {
-    display: flex;
-    gap: 12px;
-  }
-
-  .dc-letter {
-    font-size: 64px;
-    font-weight: 700;
-    color: black;
-    opacity: 0;
-    transform: translateX(-120%);
-    transition:
-      transform 0.8s ease-in-out,
-      opacity 0.8s ease-in-out,
-      color 0.4s ease-in-out,
-      background 0.4s ease-in-out;
-  }
-
-  /* Glossy text effect using gradient */
-  .dc-letter.center-style {
-    background: linear-gradient(135deg, #fff4c2, #f1c40f 40%, #fff4c2 60%, #f1c40f);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: dc-glossy-move 2s infinite ease-in-out;
-  }
-
-  @keyframes dc-glossy-move {
-    0% {
-      background-position: 0% 50%;
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
     }
-    100% {
-      background-position: 100% 50%;
+
+    #dc-loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      overflow: hidden;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
     }
-  }
 
-  body.dc-loaded #dc-loader-wrapper {
-    opacity: 0;
-    visibility: hidden;
-  }
+    .dc-haneri-container {
+      display: flex;
+      gap: 12px;
+    }
 
-  body:not(.dc-loaded) #dc-page-content {
-    display: none;
-  }
+    .dc-letter {
+      font-size: 64px;
+      font-weight: 700;
+      color: black;
+      opacity: 0;
+      transform: translateX(-120%);
+      transition:
+        transform 0.8s ease-in-out,
+        opacity 0.8s ease-in-out,
+        color 0.4s ease-in-out,
+        background 0.4s ease-in-out;
+    }
 
-  body.dc-loaded #dc-page-content {
-    display: block;
-  }
-</style>
+    .dc-letter.center-style {
+      background: linear-gradient(135deg, #fff4c2, #f1c40f 40%, #fff4c2 60%, #f1c40f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: dc-glossy-move 2s infinite ease-in-out;
+    }
 
-<div id="dc-loader-wrapper">
-  <div class="dc-haneri-container" id="dc-haneri">
-    <div class="dc-letter">H</div>
-    <div class="dc-letter">A</div>
-    <div class="dc-letter">N</div>
-    <div class="dc-letter">E</div>
-    <div class="dc-letter">R</div>
-    <div class="dc-letter">I</div>
-  </div>
-</div>
-
-<!-- Begin page content -->
-<div id="dc-page-content">
-
-
-<h1>HEllo dear</h1>
-
-</div> <!-- Close dc-page-content -->
-
-<script>
-  const letters = document.querySelectorAll('.dc-letter');
-  let loopCount = 0;
-  const maxLoops = 2;
-
-  function animateLetters() {
-    // Reset
-    letters.forEach((l) => {
-      l.classList.remove('center-style');
-      l.style.opacity = 0;
-      l.style.transform = 'translateX(-120%)';
-      l.style.color = 'black';
-    });
-
-    // Slide in one by one
-    letters.forEach((letter, index) => {
-      setTimeout(() => {
-        letter.style.opacity = 1;
-        letter.style.transform = 'translateX(0)';
-        letter.style.color = 'black';
-      }, index * 250);
-    });
-
-    // When all letters are in center, apply yellow glossy style
-    const inTime = letters.length * 250 + 400;
-    setTimeout(() => {
-      letters.forEach((l) => l.classList.add('center-style'));
-    }, inTime);
-
-    // Slide out to right in reverse
-    const outStart = inTime + 800;
-    setTimeout(() => {
-      [...letters].reverse().forEach((letter, i) => {
-        setTimeout(() => {
-          letter.classList.remove('center-style');
-          letter.style.opacity = 0;
-          letter.style.transform = 'translateX(120%)';
-          letter.style.color = 'black';
-        }, i * 250);
-      });
-    }, outStart);
-
-    // Repeat or finish
-    const finishTime = outStart + letters.length * 250 + 600;
-    setTimeout(() => {
-      loopCount++;
-      if (loopCount >= maxLoops) {
-        document.body.classList.add("dc-loaded");
-        console.log("✅ Glossy HANERI loader finished");
-      } else {
-        animateLetters(); // repeat loop
+    @keyframes dc-glossy-move {
+      0% {
+        background-position: 0% 50%;
       }
-    }, finishTime);
-  }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
 
-  window.addEventListener("load", function () {
-    console.log("⚡ HANERI glossy loader starts");
-    animateLetters();
-  });
-</script>
+    body.dc-loaded #dc-loader-wrapper {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    body:not(.dc-loaded) #dc-page-content {
+      display: none;
+    }
+
+    body.dc-loaded #dc-page-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div id="dc-loader-wrapper">
+    <div class="dc-haneri-container" id="dc-haneri">
+      <div class="dc-letter">H</div>
+      <div class="dc-letter">A</div>
+      <div class="dc-letter">N</div>
+      <div class="dc-letter">E</div>
+      <div class="dc-letter">R</div>
+      <div class="dc-letter">I</div>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div id="">
+    <h1>🌟 Welcome to the App!</h1>
+    <p>All content is loaded only after APIs and assets are ready.</p>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const letters = document.querySelectorAll('.dc-letter');
+    let stopAnimation = false;
+
+    function animateLetters() {
+      if (stopAnimation) return;
+
+      letters.forEach((l) => {
+        l.classList.remove('center-style');
+        l.style.opacity = 0;
+        l.style.transform = 'translateX(-120%)';
+        l.style.color = 'black';
+      });
+
+      letters.forEach((letter, index) => {
+        setTimeout(() => {
+          letter.style.opacity = 1;
+          letter.style.transform = 'translateX(0)';
+        }, index * 250);
+      });
+
+      const inTime = letters.length * 250 + 400;
+
+      setTimeout(() => {
+        letters.forEach((l) => l.classList.add('center-style'));
+      }, inTime);
+
+      const outStart = inTime + 800;
+      setTimeout(() => {
+        [...letters].reverse().forEach((letter, i) => {
+          setTimeout(() => {
+            letter.classList.remove('center-style');
+            letter.style.opacity = 0;
+            letter.style.transform = 'translateX(120%)';
+          }, i * 250);
+        });
+      }, outStart);
+
+      const finishTime = outStart + letters.length * 250 + 600;
+      setTimeout(() => {
+        animateLetters();
+      }, finishTime);
+    }
+
+    function dcHideLoader() {
+      stopAnimation = true;
+      document.body.classList.add("dc-loaded");
+      console.log("✅ All content (HTML + API) loaded – hiding loader...");
+    }
+
+    // Global tracking of fetch and XHR requests
+    let pendingFetches = 0;
+
+    // Track fetch()
+    const originalFetch = window.fetch;
+    window.fetch = function (...args) {
+      pendingFetches++;
+      return originalFetch(...args).finally(() => {
+        pendingFetches--;
+        checkIfReadyToHideLoader();
+      });
+    };
+
+    // Track XMLHttpRequest (e.g., jQuery or other libs)
+    (function (open) {
+      XMLHttpRequest.prototype.open = function (...args) {
+        this.addEventListener('loadend', () => {
+          pendingFetches--;
+          checkIfReadyToHideLoader();
+        });
+        pendingFetches++;
+        open.apply(this, args);
+      };
+    })(XMLHttpRequest.prototype.open);
+
+    // Check if all requests have finished
+    function checkIfReadyToHideLoader() {
+      if (pendingFetches === 0) {
+        setTimeout(() => {
+          if (pendingFetches === 0) {
+            dcHideLoader();
+          }
+        }, 500); // slight delay to ensure rendering
+      }
+    }
+
+    // Start animation when HTML & assets are loaded
+    window.addEventListener("load", function () {
+      console.log("⚡ Page loaded – starting HANERI animation...");
+      animateLetters();
+
+      // Optional fallback: hide loader after X sec in worst case
+      setTimeout(() => {
+        if (!document.body.classList.contains('dc-loaded')) {
+          console.warn("⏱️ Force hiding loader after timeout...");
+          dcHideLoader();
+        }
+      }, 2000); // failsafe after 15s
+    });
+  </script>
 </body>
 </html>
