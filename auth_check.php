@@ -1,50 +1,43 @@
 <script>
-    // Fetch stored authentication details
     const authToken = localStorage.getItem("auth_token");
-    const userRole = localStorage.getItem("user_role");
-
-    // Get the current page URL
+    const userRole = localStorage.getItem("role");
     const currentPage = window.location.pathname;
 
-    // List of pages that only admins can access
+    // Pages restricted to admins only
     const adminPages = [
         "../admin/index.php",
-        
-        "../admin/pages/add_user.php",
-        "../admin/pages/show_users.php",
-
-        "../admin/pages/add_product.php",
-        "../admin/pages/show_products.php",
-
-        "../admin/pages/add_category.php",
-        "../admin/pages/show_categories.php",
-
-        "../admin/pages/add_brand.php",
-        "../admin/pages/show_brands.php",
-
-        "../admin/pages/add_order.php",
-        "../admin/pages/show_orders.php",
-        "../admin/pages/view_order.php",
+        "../admin/nxt-pages/order-table.php",
+        // Add more full path admin-only pages here
     ];
 
-    // List of pages that only customers can access
+    // Pages restricted to customers only
     const customerPages = [
-        "../order-complete.php",
-        "../checkout.php",
-        "../profile.php"
+        "/pages/order-complete.php",
+        "/pages/checkout.php",
+        "/pages/profile.php"
+        // Add more full path customer-only pages here
     ];
 
-    // Check if the user is logged in
+    // Step 1: If no token, block access to admin or customer pages
     if (!authToken) {
-        // Redirect to login page if not authenticated
-        window.location.href = "../login.php";
-    } else {
-        if (userRole === "admin" && customerPages.includes(currentPage)) {
-            // Redirect admin users trying to access customer pages
-            window.location.href = "../admin/index.php";
-        } else if (userRole === "customer" && adminPages.includes(currentPage)) {
-            // Redirect customer users trying to access admin pages
-            window.location.href = "../index.php";
+        if (adminPages.includes(currentPage) || customerPages.includes(currentPage)) {
+            window.location.href = "../sign-in.php";
+        }
+    }
+
+    // Step 2: If token exists, validate access based on role
+    else {
+        if (userRole === "admin") {
+            if (!adminPages.includes(currentPage)) {
+                window.location.href = "../sign-in.php";
+            }
+        } else if (userRole === "customer") {
+            if (!customerPages.includes(currentPage)) {
+                window.location.href = "../sign-in.php";
+            }
+        } else {
+            // Invalid or unknown role
+            window.location.href = "../sign-in.php";
         }
     }
 </script>
